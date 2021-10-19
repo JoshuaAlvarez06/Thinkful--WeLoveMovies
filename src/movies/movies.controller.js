@@ -2,9 +2,9 @@ const service = require("./movies.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 function isShowingIsTrue(req, res, next) {
-    if (req.query.is_showing && req.query.is_showing === "false") {
+    if (req.query.is_showing && req.query.is_showing !== "true") {
         return next({
-            status: 404,
+            status: 400,
             message: `Invalid request query.`,
         })
     }

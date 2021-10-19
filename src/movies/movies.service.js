@@ -16,6 +16,7 @@ function list() {
 function listShowing() {
     return knex("movies as m")
         .join("movies_theaters as mt", "m.movie_id", "mt.movie_id")
+        //SELECT distinct
         .distinct("m.*")
         .where({"mt.is_showing": true})
         .orderBy("m.movie_id")
@@ -29,27 +30,26 @@ function read(movieId) {
 };
 
 function readTheaters(movieId) {
-    return knex("movies as m")
-        .join("movies_theaters as mt", "m.movie_id", "mt.movie_id")
+    return knex("movies_theaters as mt")
         .join("theaters as t", "mt.theater_id", "t.theater_id")
         //Same as SELECT distinct
         .distinct("t.*")
-        .where({ "m.movie_id": movieId })
+        .where({ "mt.movie_id": movieId })
 };
 
 function readReviews(movieId) {
     return knex("reviews as r")
         .join("critics as c", "r.critic_id", "c.critic_id")
-        .select("r.*", "c.*")
+        .select("*")
         .where({ "r.movie_id": movieId })
         .then((reviews) => {
             //New array
             const reviewsCritic = [];
             reviews.forEach((review) => {
                 //addCritic is the function that used mapProperties (top of file)
-                const critic = addCritic(review);
-                //Add critic object
-                reviewsCritic.push(critic);
+                const newReview = addCritic(review);
+                //Add the review with the nested critic to the new array
+                reviewsCritic.push(newReview);
             })
             return reviewsCritic;
         });

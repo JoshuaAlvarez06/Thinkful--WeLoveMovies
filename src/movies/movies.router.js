@@ -17,7 +17,6 @@ router
     .get(controller.read)
     .all(methodNotAllowed);
 
-
 router
     .route("/:movieId/reviews")
     .get(controller.read)
