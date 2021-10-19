@@ -1,0 +1,45 @@
+const service = require("./movies.service");
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+
+function isShowingIsTrue(req, res, next) {
+    if (req.query.is_showing && req.query.is_showing === "false") {
+        return next({
+            status: 404,
+            message: `Invalid request query.`,
+        })
+    }
+    return next();
+}
+
+async function movieExists(req, res, next) {
+    const { movieId } = req.params;
+    const foundMovie = req.originalUrl.includes("theaters") ? await service.readTheaters(movieId) : await service.read(movieId);
+    if (foundMovie) {
+        res.locals.movie = foundMovie;
+        console.log(foundMovie)
+        return next();
+    };
+    return next({
+        status: 404,
+        message: "Movie cannot be found."
+    })
+}
+
+async function list(req, res) {
+    let data;
+    if (req.query.is_showing && req.query.is_showing === "true") {
+        data = await service.listShowing();
+    } else {
+        data = await service.list();
+    }
+    res.json({ data });
+};
+
+async function read(req, res) {
+    res.json({ data: res.locals.movie })
+}
+
+module.exports = {
+    list: [isShowingIsTrue, asyncErrorBoundary(list)],
+    read: [asyncErrorBoundary(movieExists), asyncErrorBoundary(read)],
+};
