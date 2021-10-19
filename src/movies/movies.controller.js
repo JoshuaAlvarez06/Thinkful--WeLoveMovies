@@ -13,7 +13,14 @@ function isShowingIsTrue(req, res, next) {
 
 async function movieExists(req, res, next) {
     const { movieId } = req.params;
-    const foundMovie = req.originalUrl.includes("theaters") ? await service.readTheaters(movieId) : await service.read(movieId);
+    let foundMovie;
+    if (req.originalUrl.includes("theaters")) {
+        foundMovie = await service.readTheaters(movieId);
+    } else if (req.originalUrl.includes("reviews")) {
+        foundMovie = await service.readReviews(movieId);
+    } else {
+        foundMovie = await service.read(movieId);
+    };
     if (foundMovie) {
         res.locals.movie = foundMovie;
         console.log(foundMovie)
