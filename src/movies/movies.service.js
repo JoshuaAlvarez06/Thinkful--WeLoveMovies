@@ -11,7 +11,7 @@ const addCritic = mapProperties({
 function list() {
     return knex("movies")
         .select("*");
-}
+};
 
 function listShowing() {
     return knex("movies as m")
@@ -19,14 +19,14 @@ function listShowing() {
         .distinct("m.*")
         .where({"mt.is_showing": true})
         .orderBy("m.movie_id")
-}
+};
 
 function read(movieId) {
     return knex("movies")
         .select("*")
         .where({ "movie_id": movieId })
         .first();
-}
+};
 
 function readTheaters(movieId) {
     return knex("movies as m")
@@ -35,7 +35,7 @@ function readTheaters(movieId) {
         //Same as SELECT distinct
         .distinct("t.*")
         .where({ "m.movie_id": movieId })
-}
+};
 
 function readReviews(movieId) {
     return knex("reviews as r")
@@ -53,7 +53,7 @@ function readReviews(movieId) {
             })
             return reviewsCritic;
         });
-}
+};
 
 module.exports = {
     list,

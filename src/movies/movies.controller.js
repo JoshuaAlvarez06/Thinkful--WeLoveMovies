@@ -9,7 +9,7 @@ function isShowingIsTrue(req, res, next) {
         })
     }
     return next();
-}
+};
 
 async function movieExists(req, res, next) {
     const { movieId } = req.params;
@@ -23,14 +23,13 @@ async function movieExists(req, res, next) {
     };
     if (foundMovie) {
         res.locals.movie = foundMovie;
-        console.log(foundMovie)
         return next();
     };
     return next({
         status: 404,
-        message: "Movie cannot be found."
+        message: "Movie cannot be found.",
     })
-}
+};
 
 async function list(req, res) {
     let data;
@@ -43,7 +42,7 @@ async function list(req, res) {
 };
 
 async function read(req, res) {
-    res.json({ data: res.locals.movie })
+    res.json({ data: res.locals.movie });
 }
 
 module.exports = {
