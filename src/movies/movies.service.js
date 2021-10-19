@@ -32,6 +32,7 @@ function readTheaters(movieId) {
     return knex("movies as m")
         .join("movies_theaters as mt", "m.movie_id", "mt.movie_id")
         .join("theaters as t", "mt.theater_id", "t.theater_id")
+        //Same as SELECT distinct
         .distinct("t.*")
         .where({ "m.movie_id": movieId })
 }
@@ -42,15 +43,17 @@ function readReviews(movieId) {
         .select("r.*", "c.*")
         .where({ "r.movie_id": movieId })
         .then((reviews) => {
+            //New array
             const reviewsCritic = [];
             reviews.forEach((review) => {
+                //addCritic is the function that used mapProperties (top of file)
                 const critic = addCritic(review);
+                //Add critic object
                 reviewsCritic.push(critic);
             })
             return reviewsCritic;
         });
 }
-
 
 module.exports = {
     list,
