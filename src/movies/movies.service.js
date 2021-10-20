@@ -42,9 +42,7 @@ function readReviews(movieId) {
         .join("critics as c", "r.critic_id", "c.critic_id")
         .select("*")
         .where({ "r.movie_id": movieId })
-        .then((reviews) => {
-            return reviews.map(review => addCritic(review));
-        });
+        .then((reviews) => reviews.map(review => addCritic(review)));
 };
 
 module.exports = {

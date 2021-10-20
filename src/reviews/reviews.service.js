@@ -23,14 +23,14 @@ function destroy(reviewId) {
 function update(reviewId, updatedReview){
     return knex("reviews")
         .where({ review_id: reviewId})
-        .update(updatedReview, "*");
+        .update(updatedReview);
 }
 
 function reviewWithCritic(reviewId) {
     return knex("reviews as r")
         .join("critics as c", "r.critic_id", "c.critic_id")
         .select("*")
-        .where({ "r.review_id": reviewId })
+        .where({ "review_id": reviewId })
         .first()
         .then(addCritic);
 }

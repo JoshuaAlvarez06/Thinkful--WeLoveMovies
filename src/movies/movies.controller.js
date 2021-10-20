@@ -7,7 +7,7 @@ function isShowingIsTrue(req, res, next) {
             status: 400,
             message: `Invalid request query.`,
         })
-    }
+    };
     return next();
 };
 
