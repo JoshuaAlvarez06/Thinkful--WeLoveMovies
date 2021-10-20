@@ -33,7 +33,7 @@ function readTheaters(movieId) {
     return knex("movies_theaters as mt")
         .join("theaters as t", "mt.theater_id", "t.theater_id")
         //Same as SELECT distinct
-        .distinct("t.*")
+        .select("t.*")
         .where({ "mt.movie_id": movieId })
 };
 
@@ -43,15 +43,7 @@ function readReviews(movieId) {
         .select("*")
         .where({ "r.movie_id": movieId })
         .then((reviews) => {
-            //New array
-            const reviewsCritic = [];
-            reviews.forEach((review) => {
-                //addCritic is the function that used mapProperties (top of file)
-                const newReview = addCritic(review);
-                //Add the review with the nested critic to the new array
-                reviewsCritic.push(newReview);
-            })
-            return reviewsCritic;
+            return reviews.map(review => addCritic(review));
         });
 };
 

@@ -41,11 +41,11 @@ async function list(req, res) {
     res.json({ data });
 };
 
-async function read(req, res) {
+function read(req, res) {
     res.json({ data: res.locals.movie });
 }
 
 module.exports = {
     list: [isShowingIsTrue, asyncErrorBoundary(list)],
-    read: [asyncErrorBoundary(movieExists), asyncErrorBoundary(read)],
+    read: [asyncErrorBoundary(movieExists), read],
 };
