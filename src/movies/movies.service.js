@@ -42,6 +42,7 @@ function readReviews(movieId) {
         .join("critics as c", "r.critic_id", "c.critic_id")
         .select("*")
         .where({ "r.movie_id": movieId })
+        //Loop through the reviews and addCritic to each review
         .then((reviews) => reviews.map(review => addCritic(review)));
 };
 

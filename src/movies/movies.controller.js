@@ -1,6 +1,7 @@
 const service = require("./movies.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
+//If is_showing is equal to anything other than true, send an error.
 function isShowingIsTrue(req, res, next) {
     if (req.query.is_showing && req.query.is_showing !== "true") {
         return next({
@@ -14,6 +15,7 @@ function isShowingIsTrue(req, res, next) {
 async function movieExists(req, res, next) {
     const { movieId } = req.params;
     let foundMovie;
+    //Conditionals to determine which service function is going to be used
     if (req.originalUrl.includes("theaters")) {
         foundMovie = await service.readTheaters(movieId);
     } else if (req.originalUrl.includes("reviews")) {

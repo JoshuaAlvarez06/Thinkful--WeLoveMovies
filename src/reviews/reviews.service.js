@@ -26,6 +26,7 @@ function update(reviewId, updatedReview){
         .update(updatedReview);
 }
 
+//Read review with nested critic
 function reviewWithCritic(reviewId) {
     return knex("reviews as r")
         .join("critics as c", "r.critic_id", "c.critic_id")

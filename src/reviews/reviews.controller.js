@@ -1,6 +1,7 @@
 const service = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
+//Properties valid in request body
 const VALID_PROPERTIES = [
     "content",
     "score",
@@ -41,7 +42,9 @@ async function update(req, res) {
     const updatedReview = {
         ...req.body.data
     }
+    //Update the review
     await service.update(reviewId, updatedReview)
+    //Retrieve and respond with the updated review with the nested critic
     res.json({ data: await service.reviewWithCritic(reviewId) });
 }
 
